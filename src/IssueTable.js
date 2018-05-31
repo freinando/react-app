@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import { Table } from 'react-bootstrap';
+import './stylesheets/App.css';
 
 export default class IssueTable extends Component {           
 
@@ -9,9 +10,8 @@ export default class IssueTable extends Component {
                           return(<IssueRow key={issue._id} issue={issue} />);
               });        
     return (
-    <div className="table-responsive-lg">
-      <table className="table table-striped table-bordered table-hover">
-        <thead className="thead-dark">
+      <Table bordered hover responsive striped>
+        <thead >
           <tr>
             <th scope="col">Id</th>
             <th scope="col">Status</th>
@@ -25,8 +25,7 @@ export default class IssueTable extends Component {
         <tbody>
           {issueRows}
         </tbody>
-      </table>
-    </div>
+      </Table>
     );
   }
 }

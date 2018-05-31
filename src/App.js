@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
-//import './App.css';
+import './stylesheets/App.css';
 import IssueAdd from './IssueAdd.js';
 import IssueFilter from './IssueFilter.js';
 import IssueTable from './IssueTable.js';
 import axios from 'axios';
 import queryString from 'query-string'
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 /*const issues = [
                 { owner:"Yerri", 
@@ -18,13 +20,18 @@ import queryString from 'query-string'
                 }
 ];*/
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
       super(props);
-      this.state = {issues : []};
+      this.state = {issues : [],
+                    alert: null, 
+                    filter:""};
 
 
       this.createIssue = this.createIssue.bind(this);
+      this.showAlert = this.showAlert.bind(this);
+      this.hideAlert = this.hideAlert.bind(this);
+      this.updateFilter = this.updateFilter.bind(this);
   }
 
   componentWillMount() {
@@ -40,9 +47,34 @@ class App extends Component {
     
   }
 
+  async updateFilter(eventKey){
+      let path;
+      if(eventKey==="1"){
+        await this.setState({ filter: "Open Issues" });
+        path = "/issues?status=Open";
+      }
+      else if(eventKey==="2"){
+        await this.setState({ filter: "Assigned Issues" });
+        path = "/issues?status=Assigned";
+      }
+      else {
+        await this.setState({ filter: "All Issues" });
+        path = "/issues";
+      }
+
+      this.props.history.push(path);
+  }
 
   async loadData() {
     const values = queryString.parse(this.props.location.search);
+    let filterVal = "Assigned Items";
+    if(values.status){
+      if(values.status === "Open")
+        filterVal= "Open Items";
+      else if(values.status === "Assigned")
+        filterVal= "Assigned Items";
+    }
+
     try{
       const res = await axios.get('/api/issues', {params: values});
       if(!res.status===200){
@@ -53,10 +85,10 @@ class App extends Component {
         issue.created = new Date(issue.created);
         issue.completion= new Date(issue.completion);
       });
-      this.setState({ issues: res.data.records });
+      this.setState({ issues: res.data.records, filter: filterVal });
 
       }catch(err){ 
-        console.log('errorazo '+err);
+        return alert("Error: " + err);
       }
       
   }
@@ -81,19 +113,54 @@ class App extends Component {
     this.setState({ issues: newIssues });
   }
 
+  showAlert() {
+    const getAlert = () => (
+      <SweetAlert 
+        warning 
+        btnSize="md"
+        showCancel 
+        closeOnClickOutside
+        title="Mark this review for account 12345 as remove from trial?"
+        confirmBtnText="Save"
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="link"
+        onConfirm={this.hideAlert}
+        onCancel={this.hideAlert}>
+      </SweetAlert>
+    );
+
+    this.setState({
+      alert: getAlert()
+    });
+  }
+
+  hideAlert() {
+    console.log('Hiding alert...');
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     return (
       <div>
-        <h1>Issue Tracker</h1>
-        <IssueFilter />
-        <hr />
-        <IssueTable issues={this.state.issues}/>
-        <hr />
-        <IssueAdd createIssue={this.createIssue}/>
+        <Grid>
+          <Row xs={12} md={6}>
+            <Col >
+              <PageHeader>Issue Tracker</PageHeader>
+              <IssueFilter i="issueFilter" title={this.state.filter} callback={this.updateFilter}/>
+              <hr />
+              <IssueTable issues={this.state.issues}/>
+              <hr />
+              <IssueAdd createIssue={this.createIssue}/>
+              <Button onClick={this.showAlert}>Do it</Button>
+              {this.state.alert}
+            </Col>
+          </Row>
+        </Grid>
       </div>
     ); 
   }
 
 }
 
-export default App;
