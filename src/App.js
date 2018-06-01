@@ -7,18 +7,8 @@ import IssueTable from './IssueTable.js';
 import axios from 'axios';
 import queryString from 'query-string'
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { Button, Grid, Row, Col, PageHeader } from 'react-bootstrap';
+import { Button, Grid, Row, Col, PageHeader, Navbar, Nav, NavItem } from 'react-bootstrap';
 
-/*const issues = [
-                { owner:"Yerri", 
-                  title:"Oscar", 
-                  effort:2, 
-                  created:new Date(), 
-                  completion:new Date(), 
-                  _id:1, 
-                  status:"New"
-                }
-];*/
 
 export default class App extends Component {
   constructor(props) {
@@ -67,12 +57,12 @@ export default class App extends Component {
 
   async loadData() {
     const values = queryString.parse(this.props.location.search);
-    let filterVal = "Assigned Items";
+    let filterVal = "All Issues";
     if(values.status){
       if(values.status === "Open")
-        filterVal= "Open Items";
+        filterVal= "Open Issues";
       else if(values.status === "Assigned")
-        filterVal= "Assigned Items";
+        filterVal= "Assigned Issues";
     }
 
     try{
@@ -144,10 +134,29 @@ export default class App extends Component {
   render() {
     return (
       <div>
+          <Navbar inverse collapseOnSelect fixedTop className="nav-bar" >
+                <Navbar.Header>
+                  <Navbar.Brand >
+                    Issue Tracker
+                  </Navbar.Brand>
+                  <Navbar.Toggle />
+                </Navbar.Header>
+            <Navbar.Collapse>
+            <Nav>
+              <NavItem eventKey={1} href="#">
+                Edit
+              </NavItem>
+              <NavItem eventKey={2} href="#">
+                About us
+              </NavItem>
+            </Nav>
+            </Navbar.Collapse>
+          </Navbar>
         <Grid>
-          <Row xs={12} md={6}>
-            <Col >
-              <PageHeader>Issue Tracker</PageHeader>
+          <Row>
+          </Row>
+          <Row >
+            <Col xs={12} md={8} mdOffset={2}>
               <IssueFilter i="issueFilter" title={this.state.filter} callback={this.updateFilter}/>
               <hr />
               <IssueTable issues={this.state.issues}/>
@@ -161,6 +170,40 @@ export default class App extends Component {
       </div>
     ); 
   }
+/*
+  <Navbar inverse collapseOnSelect>
+  <Navbar.Header>
+    <Navbar.Brand>
+      <a href="#brand">React-Bootstrap</a>
+    </Navbar.Brand>
+    <Navbar.Toggle />
+  </Navbar.Header>
+  <Navbar.Collapse>
+    <Nav>
+      <NavItem eventKey={1} href="#">
+        Link
+      </NavItem>
+      <NavItem eventKey={2} href="#">
+        Link
+      </NavItem>
+      <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+        <MenuItem eventKey={3.1}>Action</MenuItem>
+        <MenuItem eventKey={3.2}>Another action</MenuItem>
+        <MenuItem eventKey={3.3}>Something else here</MenuItem>
+        <MenuItem divider />
+        <MenuItem eventKey={3.3}>Separated link</MenuItem>
+      </NavDropdown>
+    </Nav>
+    <Nav pullRight>
+      <NavItem eventKey={1} href="#">
+        Link Right
+      </NavItem>
+      <NavItem eventKey={2} href="#">
+        Link Right
+      </NavItem>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>*/
 
 }
 

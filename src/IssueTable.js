@@ -11,15 +11,15 @@ export default class IssueTable extends Component {
               });        
     return (
       <Table bordered hover responsive striped>
-        <thead >
+        <thead className="table-head">
           <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Status</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Created</th>
-            <th scope="col">Effort</th>
-            <th scope="col">Completion</th>
-            <th scope="col">Title</th>
+            <th className="table-cell">Id</th>
+            <th className="table-cell">Status</th>
+            <th className="table-cell">Owner</th>
+            <th className="table-cell">Created</th>
+            <th className="table-cell">Effort</th>
+            <th className="table-cell">Completion</th>
+            <th className="table-cell">Title</th>
           </tr>
         </thead>
         <tbody>
@@ -35,17 +35,17 @@ const IssueRow = (props) => {
 	const issue = props.issue;
 	return (
 		<tr>
-			<th scope="row">
+			<th className="table-cell">
         <Link to={`/issues/${issue._id}`}>
-          {issue._id.substr(-6)} 
+          {issue._id.substr(-10)} 
         </Link>
 			</th>
-			<td>{issue.status}</td>
-			<td>{issue.owner}</td> 
-			<td>{issue.created.toLocaleDateString()}</td> 
-			<td>{issue.effort}</td> 
-			<td>{issue.completion ? issue.completion.toLocaleDateString(): ''}</td>
-			<td>{issue.title}</td>
+			<td className="table-cell">{issue.status}</td>
+			<td className="table-cell"> {issue.owner}</td> 
+			<td className="table-cell">{issue.created.toLocaleDateString()}</td> 
+			<td className="table-cell">{issue.effort}</td> 
+			<td className="table-cell">{issue.completion ? issue.completion.toLocaleDateString(): ''}</td>
+			<td className="table-cell">{issue.title}</td>
 		</tr> 
 	);
 };

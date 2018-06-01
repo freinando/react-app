@@ -35,3 +35,58 @@
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #dddddd;
 }
+
+
+.nav-bar {
+
+    -webkit-box-shadow: 0px 4px 1px 0px #bfbfbf;  /*horizontal - vertical - blur - radius - color*/
+    -moz-box-shadow: 0px 4px 1px 0px #bfbfbf;
+    box-shadow: 0px 4px 1px 0px #bfbfbf;
+    background-color: #463a5b;
+    min-height: 70px;
+}
+
+.navbar-brand {
+  padding: 0 15px;
+  height: 70px;
+  line-height: 70px;
+  color:blue;
+  font-size: x-large;
+  font-weight: bold
+}
+
+.navbar-toggle {
+  /* (70px - button height 34px) / 2 = 23px */
+  margin-top: 18px;
+  padding: 9px 10px !important;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav > li > a {
+    /* (70px - line-height of 27px) / 2 = 26.5px */
+    padding-top: 21.5px;
+    padding-bottom: 21.5px;
+    line-height: 27px;
+    color:white;
+  }
+}
+
+body { 
+   padding-top: 90px; 
+   min-width:500px;        /* Suppose you want minimum width of 1000px */
+   width: auto !important;  /* Firefox will set width as auto */
+   width:500px;            /* As IE6 ignores !important it will set width as 1000px; */
+   font-family: 'Questrial', sans-serif;
+}
+
+.table-head{
+  font-size: large;
+  background-color: #606060;
+  color:white;
+}
+.table-cell{
+  text-align: center;
+}
+
+
+
